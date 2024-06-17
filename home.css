@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+NZ:wght@100..400&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+.home-container{
+    display: flex;
+    justify-content: flex-start;
+    min-height:100vh;
+}
+.icon-display{
+    display: none;
+}
+.side-panel{
+    padding: 20px 10px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 100vh;
+    border-right: 1px solid grey;
+}
+.first-panel{
+    gap: 15px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.title{
+    font-family: "Playwrite NZ", cursive;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    padding: 0 20px;
+}
+.logo-title{
+    margin: 40px 0;
+}
+.large-display{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    width: 100%;
+}
+.large-display p{
+    margin: 0;
+    font-size: 15px;
+    font-weight: lighter;
+}
+.large-display:hover{
+    background-color: grey;
+    border-radius: 5px;
+}
+.second-panel{
+    width: 100%;
+}
+.profile-image{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+.sm-container{
+    display: none;
+}
+/*Media Queries*/
+@media (min-width:765px) and (max-width:1366px){
+    .large-display{
+        display: none;
+    }
+    .title-display{
+        display: none;
+    }
+    .icon-display{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        padding: 10px 20px;
+        width: 100%;
+    }
+    .icon-display:hover{
+        background-color: grey;
+        border-radius: 5px;
+    }
+    .logo{
+        height: 30px;
+        width: 30px;
+    }
+    .icon{
+        font-size: 30px;
+        font-weight: lighter;
+    }
+}
+@media (max-width:764px){
+    .logo-title{
+        margin: 10px 0;
+    }
+    .side-panel{
+        display: none;
+    }
+    .sm-container{
+        display: flex;
+        flex-direction: column;
+    }
+    .top-con{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        padding:0 20px;
+        border-bottom: 1px solid grey;
+    }
+    .bottom-con{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        padding:0 20px;
+        border-top: 1px solid grey;
+    }
+    .icon-display{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        padding: 10px 20px;
+        width: auto;
+    }
+    .icon-display:hover{
+        background-color: grey;
+        border-radius: 5px;
+    }
+    .icon{
+        font-size: 30px;
+        font-weight: lighter;
+    }
+    .search-header{
+        background-color: rgba(128, 128, 128, 0.658);
+        padding: 2px 5px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+    }
+    .search-header i{
+        font-size: 20px;
+    }
+    .search-header input{
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+}
