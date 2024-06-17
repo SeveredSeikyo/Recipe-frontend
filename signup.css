@@ -4,43 +4,42 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-body{
+.container{
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background:#444;
 }
-.container{
-    background: #fff;
-    position:relative;
-    width: 70vw;
-    height: 80vh;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.3),0 6px 20px 0 rgba(0,0,0,0.3);
+ .container-one,
+ .container-two{
+    border-radius: 20px;
+    overflow: hidden;
 }
-.signin-signup{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+ .panel{
+    background-size: auto;
     height: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 40%;
-    min-width: 238px;
-    padding: 0 10px;
-}
-.title{
+    min-width: 256px;
+    text-align: center;
+    padding: 40px 30px;
+    box-sizing: border-box;
+ }
+ .image{
+    width: 60%;
+ }
+ .sign-up-form,
+ .sign-in-form{
+    background-size: auto;
+    height: 100%;
+    min-width: 256px;
+    text-align: center;
+    padding: 40px 30px;
+    box-sizing: border-box;
+ }
+ .title{
     font-size: 35px;
-    color: rgb(47, 95, 255);
+    color: rgb(19, 82, 255);
     margin-bottom: 10px;
 }
 .input-field{
@@ -48,14 +47,52 @@ form{
     height: 50px;
     background: #ffffff;
     margin: 10px 0;
-    border: 2px solid rgb(47, 95, 255);
+    border: 2px solid rgb(80, 121, 255);
     border-radius: 50px;
     display: flex;
     align-items: center;
 }
 .input-field i{
     flex: 1;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
 }
 .input-field input{
     flex: 5;
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    color: #444;
+}
+.btn{
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-radius: 50px;
+    background: rgb(77, 118, 255);
+    color: white;
+    font-weight: 500;
+    margin: 10px 0;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.btn:hover{
+    background: rgb(19, 82, 255);
+    color: #fff;
+}
+.account-text{
+    margin: 10px 0;
+}
+.icon{
+    display: flex;
+    justify-content: end;
+}
+.icon i{
+    font-size: 30px;
+    margin: 20px 20px;
+    color: black;
 }

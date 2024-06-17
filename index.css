@@ -37,6 +37,7 @@ body {
     width: 140px;
     padding: 10px;
     border-radius: 5px;
+    text-decoration: none;
     background-color: var(--clr-blue);
     color: var(--clr-white);
     border: 1px solid var(--clr-blue);
