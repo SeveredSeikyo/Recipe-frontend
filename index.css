@@ -1,0 +1,134 @@
+:root{
+    --clr-blue: #1A91F0;
+    --clr-blue-mid: #1170CD;
+    --clr-blue-dark: #1A1C6A;
+    --clr-white: #fff;
+    --clr-bright: #EFF2F9;
+    --clr-dark: #1e2532;
+    --clr-black: #000;
+    --clr-grey: #656e83;
+    --clr-green: #084C41;
+    --font-poppins: 'Poppins', sans-serif;
+    --font-manrope: 'Manrope', sans-serif;;
+    --transition: all 300ms ease-in-out;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #f8f8f8;
+}
+.div-container{
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 10px;
+    margin: 0px;
+}
+.div-container .logo{
+    width: 100px;
+    height: 75px;
+}
+.create-button{
+    height: 50px;
+    width: 140px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--clr-blue);
+    color: var(--clr-white);
+    border: 1px solid var(--clr-blue);
+    transition: var(--transition);
+}
+.create-button:hover{
+    background-color: transparent;
+    color: var(--clr-dark);
+    border-color: var(--clr-grey);
+}
+.header{
+    background-color: aliceblue;
+    padding: 60px 0px;
+}
+.header-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+    width: 80%;
+    margin: 0 auto;
+    background-color: aliceblue;
+}
+.header-container p{
+    font-weight: 500;
+    margin: 0px;
+}
+.header-container h1{
+    margin: 0px;
+    font-size: 30px;
+}
+.header-container img{
+    width: 70vw;
+    border-radius: 20px;
+}
+.main-container{
+    padding: 70px 40px;
+    text-align: left;
+}
+.container-one{
+    background-color: #f8f8f8;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+.container-two{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px 40px;
+    background-color: aliceblue;
+    align-items: center;
+}
+.svg-one{
+    width: 90%;
+}
+.div-one{
+    width: 500px;
+    margin: 10px;
+}
+.div-one h1{
+    font-size: 30px;
+}
+.div-one p{
+    font-size: 20px;
+}
+.div-all{
+    width: 250px;
+    margin: 10px;
+}
+.div-all img{
+    width: 160px;
+    height: 120px;
+}
+.text-bold{
+    font-weight: 500;
+}
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+.login-pop{
+    position: relative;
+    top: 50px;
+}
