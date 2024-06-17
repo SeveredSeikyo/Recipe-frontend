@@ -25,7 +25,7 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/signup", (req, res) => {
-    res.render("signup");
+    res.render("signup", { req: req });
 });
 
 // Register User
@@ -41,7 +41,7 @@ app.post("/signup", async (req, res) => {
     const existingUser = await collection.findOne({ name: data.name });
 
     if (existingUser) {
-        res.send('User already exists. Please choose a different username.');
+        res.redirect('/signup?error=userExists');
     } else {
         // Hash the password using bcrypt
         const saltRounds = 10; // Number of salt rounds for bcrypt
@@ -61,12 +61,12 @@ app.post("/login", async (req, res) => {
     try {
         const check = await collection.findOne({ name: req.body.username });
         if (!check) {
-            res.send("User name cannot found")
+            res.redirect("/signup?error=userNotExists");
         }
         // Compare the hashed password from the database with the plaintext password
         const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
         if (!isPasswordMatch) {
-            res.send("wrong Password");
+            res.redirect("/signup?error=wrongPassword");
         }
         else {
             res.redirect('/home');

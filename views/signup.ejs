@@ -66,9 +66,18 @@
                     <button class="btn" id="sign-up-btn">Sign up</button>
                 </div>
                 <img src="/assets/signup.svg" alt="" class="image">
-            </div>
+            </div> 
         </div>
-    </div>
+        <% if (typeof req.query.error !== 'undefined' && req.query.error === 'userExists') { %>
+            <p style="color: red;">User already exists. Please choose a different username.</p>
+        <% } %> 
+        <% if (typeof req.query.error !== 'undefined' && req.query.error === 'userNotExists') { %>
+            <p style="color: red;">User not found.</p>
+        <% } %>  
+        <% if (typeof req.query.error !== 'undefined' && req.query.error === 'wrongPassword') { %>
+            <p style="color: red;">Incorrect Username and Password.</p>
+        <% } %>   
+    </div>  
     <script src="/js/signup.js"></script>
 </body>
 </html>
