@@ -23,8 +23,8 @@ client.connect(err => {
     console.log('Connected to MongoDB');
 
     // Database and collection
-    const db = client.db('your_database_name');
-    const usersCollection = db.collection('users');
+    const db = client.db('recipe');
+    const usersCollection = db.collection('recipe_users');
 
     // Serve static files
     app.use(express.static('public'));

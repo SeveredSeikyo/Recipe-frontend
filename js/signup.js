@@ -27,7 +27,7 @@ loginBtn.addEventListener("submit",async function(event){
     event.preventDefault();
     const username=document.getElementById("loginUser").value;
     const password=document.getElementById("loginPassword").value;
-    const response=await fetch('/signup',{
+    const response=await fetch('/signin',{
         method:"POST",
         headers:{
             'content-type':'application/json'
@@ -42,7 +42,8 @@ loginBtn.addEventListener("submit",async function(event){
     else{
         alert("Failed to sign up");
     }
-}
+});
+
 signUpBtn.addEventListener("submit",async function(event){
     event.preventDefault();
     console.log("Inside SignUp");
@@ -64,4 +65,4 @@ signUpBtn.addEventListener("submit",async function(event){
     else{
         alert("Failed to sign up");
     }
-}
+});
