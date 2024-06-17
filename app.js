@@ -1,21 +1,20 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5500;
 
 // Middleware to parse incoming request bodies
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// MongoDB Atlas connection URI (replace with your own credentials)
-const uri = 'mongodb+srv://thanmaysadguru:JliusNz8vTmUfIev@recipe.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
+// MongoDB connection URI
+const uri = process.env.MONGODB_URI;
 
 // MongoDB Client instance
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Connect to MongoDB
 client.connect(err => {
     if (err) {
         console.error('Error connecting to MongoDB:', err);
@@ -24,29 +23,18 @@ client.connect(err => {
     console.log('Connected to MongoDB');
 
     // Database and collection
-    const db = client.db('recipedb');
-    const usersCollection = db.collection('recipe_users');
+    const db = client.db('your_database_name');
+    const usersCollection = db.collection('users');
 
-    // Serve static files (not needed for this example)
-    // app.use(express.static('public'));
-
-    // Serve the homepage
-    app.get('/', (req, res) => {
-        res.sendFile(__dirname + '/index.html');
-    });
-
-    // Serve the signup/signin page (not static here, but could be rendered with a template engine)
-    app.get('/signup', (req, res) => {
-        res.sendFile(__dirname + '/signup.html');
-    });
+    // Serve static files
+    app.use(express.static('public'));
 
     // Handle signup form submission
     app.post('/signup', async (req, res) => {
-        const { username, password } = req.body;
+        const { username,email, password } = req.body;
 
-        // Insert into database
         try {
-            const result = await usersCollection.insertOne({ username, password });
+            const result = await usersCollection.insertOne({ username:username,email:email, password:password });
             console.log('Inserted new user:', result.ops[0]);
             res.status(201).send('Successfully signed up');
         } catch (error) {
@@ -57,11 +45,10 @@ client.connect(err => {
 
     // Handle signin form submission
     app.post('/signin', async (req, res) => {
-        const { 'signin-username': username, 'signin-password': password } = req.body;
+        const { username, password } = req.body;
 
-        // Query database for user credentials
         try {
-            const user = await usersCollection.findOne({ username, password });
+            const user = await usersCollection.findOne({ username:username, password:password });
             if (user) {
                 res.status(200).send('Successfully signed in');
             } else {
