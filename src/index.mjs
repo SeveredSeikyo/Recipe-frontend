@@ -182,6 +182,8 @@ app.get("/api/posts", async (req, res) => {
     }
 });
 
+
+
 // Handle image upload and store metadata
 app.post('/api/post', upload.single('image'), async (req, res) => {
     try {
