@@ -6,7 +6,7 @@
     <link rel="icon" href="assets/chefcloud.png" type="image/png">
     <title>ChefCloud</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/profile.css">
+    <link rel="stylesheet" href="/explore.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -41,11 +41,11 @@
                     <a href="/search" class="anchor-icon"><i class='bx bx-search icon'></i></a>
                 </div>
                 <div class="large-display">
-                    <i class='bx bxs-plus-square icon'></i>
+                    <a href="/post" class="anchor-icon"><i class='bx bxs-plus-square icon'></i></a>
                     <p>Post</p>
                 </div>
                 <div class="icon-display">
-                    <i class='bx bxs-plus-square icon'></i>
+                    <a href="/post" class="anchor-icon"><i class='bx bxs-plus-square icon'></i></a>
                 </div>
                 <div class="large-display">
                     <a href="/profile"><img src="assets/square-png.webp" alt="profile" class="profile-image"></a>
@@ -56,12 +56,20 @@
                 </div>
             </div>
             <div class="second-panel">
-                <div class="large-display">
+                <!-- <div class="large-display">
                     <p>Logout</p>
                 </div>
                 <div class="icon-display">
                     <i class='bx bx-log-out icon'></i>
-                </div>
+                </div> -->
+                <form action="/logout" method="get">
+                    <div class="large-display">
+                        <p>Logout</p>
+                    </div>
+                    <div class="icon-display">
+                        <i class='bx bx-log-out icon'></i>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="sm-container">
@@ -70,7 +78,7 @@
                     <a href="/home" class="title">ChefCloud</a>
                 </div>
                 <div class="icon-display">
-                    <i class='bx bxs-plus-square icon'></i>
+                    <a href="/post" class="anchor-icon"><i class='bx bxs-plus-square icon'></i></a>
                 </div>
             </div>
             <div class="bottom-con">
@@ -89,7 +97,7 @@
             </div>
         </div>
         <div class="main-content">
-            <div class="explore-items">
+            <div>
 
             </div>
         </div>

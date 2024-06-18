@@ -1,5 +1,9 @@
 // public/js/upload.js
+const titleEl=document.getElementById("title");
+const descriptionEl=document.getElementById("description");
+const imageEl=document.getElementById("image");
 document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+    console.log("Inside");
     event.preventDefault();
 
     const form = event.target;
@@ -23,7 +27,10 @@ document.getElementById('uploadForm').addEventListener('submit', async (event) =
 
         const result = await response.json();
         if (response.ok) {
-            alert('Image uploaded successfully!');
+            alert('post uploaded successfully!');
+            titleEl.value="";
+            descriptionEl.value="";
+            imageEl.value="";
             console.log(result);
         } else {
             alert('Error uploading image');
