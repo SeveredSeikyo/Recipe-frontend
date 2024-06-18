@@ -1,22 +1,44 @@
-const express = require("express");
-const path = require("path");
-const {MongoClient} = require('mongodb');
-const {recipeUsersCollection,recipeCollection} = require("./config");
-const bcrypt = require('bcrypt');
+import express from 'express';
+import path from 'path';
+import { MongoClient } from 'mongodb';
+import { BlobServiceClient } from '@azure/storage-blob';
+import bcrypt from 'bcrypt';
+import 'dotenv/config';
+import multer from 'multer';
+import { Readable } from 'stream';
 
+// Environment Variables
+const mongodbUri = process.env.MONGODB_URI;
+const accountName = process.env.ACCOUNT_NAME;
+const sasToken = process.env.SAS_TOKEN;
+const containerName = process.env.CONTAINER_NAME;
+
+// Azure Blob Storage setup
+const blobServiceClient = new BlobServiceClient(`https://${accountName}.blob.core.windows.net/?${sasToken}`);
+const containerClient = blobServiceClient.getContainerClient(containerName);
+
+// MongoDB setup
+const client = new MongoClient(mongodbUri);
+await client.connect();
+const db = client.db("tutorial");
+const loginCredentials = db.collection('loginCredentials');
+const userPosts = db.collection('userPosts');
+
+// Express setup
 const app = express();
-// convert data into json format
+const port = 5000;
+
 app.use(express.json());
-// Serve static files from 'public' and 'assets' directories
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use('/assets', express.static('assets'));
 app.use('/js', express.static('js'));
-
-
-app.use(express.urlencoded({ extended: false }));
-//use EJS as the view engine
 app.set("view engine", "ejs");
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Routes
 app.get("/", (req, res) => {
     res.render("index");
 });
@@ -29,11 +51,11 @@ app.get("/home", (req, res) => {
     res.render("home");
 });
 
-app.get("/profile", (req,res) => {
+app.get("/profile", (req, res) => {
     res.render("profile");
 });
 
-app.get("/search", (req,res) => {
+app.get("/search", (req, res) => {
     res.render("search");
 });
 
@@ -50,21 +72,15 @@ app.post("/signup", async (req, res) => {
             password: req.body.password
         }
 
-        // Check if the username already exists in the database
-        const existingUser = await recipeUsersCollection.findOne({ name: data.name });
+        const existingUser = await loginCredentials.findOne({ name: data.name });
 
         if (existingUser) {
             res.redirect('/signup?error=userExists');
         } else {
-            // Hash the password using bcrypt
-            const saltRounds = 10; // Number of salt rounds for bcrypt
+            const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(data.password, saltRounds);
-
-            data.password = hashedPassword; // Replace the original password with the hashed one
-
-            // Insert the user data into the database
-            await recipeUsersCollection.insertOne(data);
-
+            data.password = hashedPassword;
+            await loginCredentials.insertOne(data);
             res.redirect('/home');
         }
     } catch (error) {
@@ -73,21 +89,18 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-// Login user 
+// Login User
 app.post("/login", async (req, res) => {
     try {
         const username = req.body.username;
         const password = req.body.password;
-
-        // Find the user by username
-        const user = await recipeUsersCollection.findOne({ name: username });
+        const user = await loginCredentials.findOne({ name: username });
 
         if (!user) {
             res.redirect("/signup?error=userNotExists");
             return;
         }
 
-        // Compare the hashed password from the database with the plaintext password
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
@@ -95,7 +108,6 @@ app.post("/login", async (req, res) => {
             return;
         }
 
-        // Redirect to home page if login is successful
         res.redirect('/home');
     } catch (error) {
         console.error("Error logging in user:", error);
@@ -103,43 +115,47 @@ app.post("/login", async (req, res) => {
     }
 });
 
-//retrieve search data
-app.post('/api/search', async (req, res) => {
+// Handle image upload and store metadata
+app.post('/api/post', upload.single('image'), async (req, res) => {
     try {
-        // Extract the search query from the request body
-        const searchOutput = req.body.query;
+        const { title, description } = req.body;
+        const { originalname, mimetype, buffer } = req.file;
 
-        // Create a MongoDB client
-        const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        const fileType = mimetype.split('/')[1];
+        const fileName = originalname || `image-${Date.now()}.${fileType}`;
+        const caption = 'No caption provided'; // Modify this if you need to extract the caption from the request
 
-        // Connect to the MongoDB server
-        await client.connect();
+        const imageUrl = await uploadImageStreamed(fileName, buffer);
+        await storeMetadata(title, description, fileName, caption, fileType, imageUrl);
 
-        // Access the 'recipe' collection
-        const recipeCollection = client.db('recipedb').collection('recipe');
-
-        // Execute the search query and limit the results to 20
-        const searchResults = await recipeCollection.find({ title: searchOutput }).limit(20).toArray();
-
-        // Log the search query and results
-        console.log('Search query received:', searchOutput);
-        console.log('Search results:', searchResults);
-
-        // Close the MongoDB client connection
-        await client.close();
-
-        // Send the search results as a response
-        res.json({ message: 'Search query received', results: searchResults });
+        res.status(201).send({ message: 'Post created successfully', imageUrl });
     } catch (error) {
-        // Handle any errors that occur during the search operation
-        console.error('Error processing search query:', error);
-        res.status(500).json({ error: 'An internal server error occurred' });
+        console.error('Error:', error);
+        res.status(500).send({ error: 'Internal Server Error' });
     }
 });
 
+// Extract metadata
+function extractMetadata(file) {
+    const fileType = file.mimetype.split('/')[1];
+    const fileName = file.originalname || `image-${Date.now()}.${fileType}`;
+    const caption = 'No caption provided';
+    return { fileName, caption, fileType };
+}
 
-// Define Port for Application
-const port = 5000;
+// Upload image to Azure Blob Storage
+async function uploadImageStreamed(blobName, buffer) {
+    const blobClient = containerClient.getBlockBlobClient(blobName);
+    const stream = Readable.from(buffer);
+    await blobClient.uploadStream(stream);
+    return blobClient.url;
+}
+
+// Store metadata in MongoDB
+async function storeMetadata(title, description, name, caption, fileType, imageUrl) {
+    await userPosts.insertOne({ title, description, name, caption, fileType, imageUrl });
+}
+
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
+    console.log(`Server listening on port ${port}`);
 });
