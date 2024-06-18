@@ -172,14 +172,19 @@ body{
         font-weight: lighter;
     }
     .search-header{
-        background-color: rgba(128, 128, 128, 0.658);
+        background-color: white;
         padding: 2px 5px;
         border-radius: 5px;
+        border: 1px solid black;
         display: flex;
+        justify-content: flex-start;
+        margin: 10px 10px;
+        width: 100%;
         align-items: center;
+        height: 35px;
     }
     .search-header i{
-        font-size: 20px;
+        font-size: 15px;
     }
     .search-header input{
         border: none;

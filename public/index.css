@@ -17,8 +17,11 @@ body {
     margin: 0;
     padding: 0;
     max-height: 100vh;
-    overflow: hidden;
+    overflow: auto;
     background-color: #f8f8f8;
+}
+::-webkit-scrollbar{
+    display: none;
 }
 .div-container{
     background-color: white;

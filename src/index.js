@@ -24,6 +24,10 @@ app.get("/home", (req, res) => {
     res.render("home");
 });
 
+app.get("/search", (req,res) => {
+    res.render("search");
+});
+
 app.get("/signup", (req, res) => {
     res.render("signup", { req: req });
 });
