@@ -20,6 +20,10 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+app.get("/explore", (req, res) => {
+    res.render("explore");
+});
+
 app.get("/home", (req, res) => {
     res.render("home");
 });

@@ -68,8 +68,8 @@ body{
     width: 100%;
 }
 .profile-image{
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     border-radius: 50%;
 }
 .sm-container{
@@ -89,6 +89,27 @@ body{
     /* margin-bottom: 20px; */
     background-color: aquamarine;
 }
+.search-header{
+    background-color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 10px;
+    width: 95%;
+    align-items: center;
+    height: 35px;
+}
+.search-header i{
+    font-size: 15px;
+}
+.search-header input{
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
 /*Media Queries*/
 @media (min-width:765px) and (max-width:1366px){
     .large-display{
@@ -182,5 +203,8 @@ body{
         border: none;
         outline: none;
         background: transparent;
+    }
+    .sm-search{
+        display: none;
     }
 }
