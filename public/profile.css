@@ -106,10 +106,6 @@ body{
         padding: 10px 20px;
         width: 100%;
     }
-    .icon-display:hover{
-        background-color: grey;
-        border-radius: 5px;
-    }
     .logo{
         height: 30px;
         width: 30px;
@@ -162,10 +158,6 @@ body{
         cursor: pointer;
         padding: 10px 20px;
         width: auto;
-    }
-    .icon-display:hover{
-        background-color: grey;
-        border-radius: 5px;
     }
     .icon{
         font-size: 30px;
