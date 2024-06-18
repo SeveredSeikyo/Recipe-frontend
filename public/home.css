@@ -89,7 +89,9 @@ body{
     /* margin-bottom: 20px; */
     background-color: aquamarine;
 }
+
 /*Media Queries*/
+
 @media (min-width:765px) and (max-width:1366px){
     .large-display{
         display: none;

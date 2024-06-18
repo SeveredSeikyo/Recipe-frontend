@@ -66,9 +66,11 @@
         </div>
         <div class="sm-container">
             <div class="top-con">
-                <div class="search-header">
-                    <i class='bx bx-search icon'></i>
-                    <input type="search" id="searchInput" placeholder="search">
+                <div class="title-display logo-title">
+                    <a href="/home" class="title">ChefCloud</a>
+                </div>
+                <div class="icon-display">
+                    <i class='bx bxs-plus-square icon'></i>
                 </div>
             </div>
             <div class="bottom-con">
@@ -87,11 +89,14 @@
             </div>
         </div>
         <div class="main-content">
-            <div class="search-header sm-search">
-                <i class='bx bx-search icon'></i>
-                <input type="search" id="searchInput" placeholder="search">
-            </div>
+            <form action="/api/search" id="searchForm">
+                <div class="form-group">
+                    <!-- <i class='bx bx-search icon'></i> -->
+                    <input type="search" id="searchInput" class="form-control">
+                </div>
+            </form>
         </div>
     </div>
+    <script src="/js/search.js"></script>
 </body>
 </html>

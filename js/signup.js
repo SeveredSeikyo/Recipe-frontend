@@ -6,6 +6,7 @@ const container_one=document.querySelector(".container-one");
 const container_two=document.querySelector(".container-two");
 const loginBtn=document.getElementById("loginBtn");
 const signUpBtn=document.getElementById("signUpBtn");
+
 sign_up_btn.addEventListener("click",()=>{
     container_one.classList.toggle("d-none");
     container_two.classList.toggle("d-none");
