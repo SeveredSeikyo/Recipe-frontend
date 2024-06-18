@@ -20,6 +20,8 @@ const containerName = process.env.CONTAINER_NAME;
 const secretKey=process.env.SECRET_KEY;
 const sessionCollection = 'sessions';
 const databaseName = process.env.MONGODB_DATABASE;
+const dbName = 'recipedb';
+const collectionName = 'recipes';
 
 // Azure Blob Storage setup
 const blobServiceClient = new BlobServiceClient(`https://${accountName}.blob.core.windows.net/?${sasToken}`);
@@ -211,13 +213,28 @@ async function fetchRandomRecipes(numRecipes) {
 }
 
 // Example usage
-fetchRandomRecipes(numRecipes);
-app.post('/api/random', async(req,res) => {
-    try{
+app.post("/api/random", async (req, res) => {
+    try {
         const numRecipes = req.body.numRecipes;
-        console.log(numRecipes);
+        console.log(`Number of recipes requested: ${numRecipes}`);
         const randomRecipes = await fetchRandomRecipes(numRecipes);
-        res.send({randomRecipes});
+        res.json({ randomRecipes });
+    } catch (err) {
+        console.error('Error in /api/random route:', err);
+        res.status(500).send(err);
+    }
+});
+
+//User Posts Retrieval
+app.post('/api/userposts', async(req,res)=>{
+    try{
+        const numPosts=res.body.numPosts;
+        const userPosts=await userPosts.aggregate([{$sample:{size:numPosts}}]).toArray();
+        res.json({userPosts});
+    }
+    catch(err){
+        console.error('Error in /api/userposts route:', err);
+        res.status(500).send(err);
     }
 });
 
