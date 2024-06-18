@@ -16,7 +16,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
     background-color: #f8f8f8;
 }
 .div-container{
