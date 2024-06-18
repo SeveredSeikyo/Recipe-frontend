@@ -9,7 +9,8 @@ import { Readable } from 'stream';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
-import MongoDBStore from 'connect-mongodb-session';
+import MongoDBStoreFactory from 'connect-mongodb-session';
+const MongoDBStore = MongoDBStoreFactory(session);
 
 // Environment Variables
 const mongodbUri = process.env.MONGODB_URI;
@@ -17,6 +18,8 @@ const accountName = process.env.ACCOUNT_NAME;
 const sasToken = process.env.SAS_TOKEN;
 const containerName = process.env.CONTAINER_NAME;
 const secretKey=process.env.SECRET_KEY;
+const sessionCollection = 'sessions';
+const databaseName = process.env.MONGODB_DATABASE;
 
 // Azure Blob Storage setup
 const blobServiceClient = new BlobServiceClient(`https://${accountName}.blob.core.windows.net/?${sasToken}`);
@@ -32,7 +35,8 @@ const userDetails=db.collection('recipe_userDetails');
 
 const store = new MongoDBStore({
     uri: mongodbUri,
-    collection: 'sessions'
+    databaseName: databaseName, 
+    collection: sessionCollection
 });
 // Express setup
 const app = express();
@@ -166,9 +170,9 @@ app.get("/api/posts", async (req, res) => {
         console.log("we r in");
         // Retrieve username from session or request (depends on your authentication setup)
         const username = req.session.user;
-
+        console.log(username);
         // Query the database for posts associated with the current user's username
-        const posts = await userPosts.find({ name: username }).toArray();
+        const posts = await userPosts.find({ username: username }).toArray();
         console.log(posts);
         // Send the fetched posts as a JSON response
         res.json(posts);

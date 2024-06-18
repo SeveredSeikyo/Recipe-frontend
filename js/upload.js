@@ -50,7 +50,7 @@ async function loadPosts() {
         // Append new posts
         posts.forEach(post => {
             const postElement = document.createElement('div');
-            postElement.classList.add('post');
+            postElement.classList.add('post-element','col-12','col-md-4','text-center');
             
             const title = document.createElement('h3');
             title.textContent = post.title;
@@ -61,13 +61,14 @@ async function loadPosts() {
             const image = document.createElement('img');
             image.src = post.imageUrl;
             image.alt = post.title;
+            image.classList.add("w-50");
             
             const date = document.createElement('p');
             date.textContent = post.formattedDate; // Assuming date is returned from the server
             
+            postElement.appendChild(image);
             postElement.appendChild(title);
             postElement.appendChild(description);
-            postElement.appendChild(image);
             postElement.appendChild(date);
             
             postItemContainer.appendChild(postElement);

@@ -97,13 +97,30 @@
             </div>
         </div>
         <div class="main-content">
-            <form action="/api/search" id="searchForm">
+            <form id="searchForm">
                 <div class="form-group">
                     <!-- <i class='bx bx-search icon'></i> -->
-                    <input type="search" id="searchInput" class="form-control">
+                    <input type="search" id="searchInput" class="form-control" placeholder="Press Enter to Search">
                 </div>
             </form>
+            <div class="recipe-container row">
+                <div class="recipe-item col-12 col-md-3">
+                    <div class="recipe-img">
+                        <img src="https://www.themealdb.com/images/media/meals/qpxvuq1511798906.jpg" alt="foodImage">
+                    </div>
+                    <div class="recipe-details">
+                        <div class="recipe-title">
+                            <h3>Piripiri chicken and slaw</h3>
+                        </div>
+                        <div class="recipe-filters">
+                            <p class="btn btn-primary">Portueguese</p>
+                            <p class="btn btn-success">Chicken</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="/js/search.js"></script>
 </body>
 </html>

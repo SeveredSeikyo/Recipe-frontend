@@ -20,6 +20,15 @@ body{
 .anchor-icon{
     color: black;
 }
+.post-element{
+    background-size: cover;
+    max-height: 350px;
+    max-width: 350px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto;
+    margin: 10px;
+}
 .side-panel{
     padding: 20px 10px;
     margin: 0;
@@ -154,6 +163,7 @@ body{
         position: fixed;
         bottom: 0;
         padding:0 20px;
+        background-color: white;
         border-top: 1px solid grey;
     }
     .icon-display{
