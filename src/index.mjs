@@ -182,7 +182,44 @@ app.get("/api/posts", async (req, res) => {
     }
 });
 
+//Random Picks
+async function fetchRandomRecipes(numRecipes) {
+    try {
+        // Connect to MongoDB
+        const client = new MongoClient(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+        await client.connect();
+        console.log('Connected to MongoDB');
 
+        // Access the recipes collection
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+
+        // Fetch random recipes
+        const randomRecipes = await collection.aggregate([{ $sample: { size: numRecipes } }]).toArray();
+
+        console.log(`Fetched ${randomRecipes.length} random recipes:`);
+        console.log(randomRecipes);
+
+        // Close the MongoDB connection
+        await client.close();
+
+        return randomRecipes;
+    } catch (error) {
+        console.error('Error fetching random recipes:', error.message);
+        return null;
+    }
+}
+
+// Example usage
+fetchRandomRecipes(numRecipes);
+app.post('/api/random', async(req,res) => {
+    try{
+        const numRecipes = req.body.numRecipes;
+        console.log(numRecipes);
+        const randomRecipes = await fetchRandomRecipes(numRecipes);
+        res.send({randomRecipes});
+    }
+});
 
 // Handle image upload and store metadata
 app.post('/api/post', upload.single('image'), async (req, res) => {
