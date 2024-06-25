@@ -17,11 +17,14 @@ const mongodbUri = process.env.MONGODB_URI;
 const accountName = process.env.ACCOUNT_NAME;
 const sasToken = process.env.SAS_TOKEN;
 const containerName = process.env.CONTAINER_NAME;
-const secretKey=process.env.SECRET_KEY;
+const secretKey = process.env.SECRET_KEY;
 const sessionCollection = 'sessions';
 const databaseName = process.env.MONGODB_DATABASE;
 const dbName = 'recipedb';
 const collectionName = 'recipes';
+
+// Log MongoDB URI to verify
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
 
 // Azure Blob Storage setup
 const blobServiceClient = new BlobServiceClient(`https://${accountName}.blob.core.windows.net/?${sasToken}`);
@@ -30,16 +33,17 @@ const containerClient = blobServiceClient.getContainerClient(containerName);
 // MongoDB setup
 const client = new MongoClient(mongodbUri);
 await client.connect();
-const db = client.db("recipedb");
+const db = client.db(dbName);
 const loginCredentials = db.collection('recipe_users');
 const userPosts = db.collection('recipe_userPosts');
-const userDetails=db.collection('recipe_userDetails');
+const userDetails = db.collection('recipe_userDetails');
 
 const store = new MongoDBStore({
     uri: mongodbUri,
     databaseName: databaseName, 
     collection: sessionCollection
 });
+
 // Express setup
 const app = express();
 const port = 5000;
@@ -95,7 +99,7 @@ app.get("/signup", (req, res) => {
     res.render("signup", { req: req });
 });
 
-app.get("/post", (req,res) => {
+app.get("/post", (req, res) => {
     res.render("post");
 });
 
@@ -142,19 +146,18 @@ app.post("/login", async (req, res) => {
         if (!isPasswordMatch) {
             res.redirect("/signup?error=wrongPassword");
             return;
-        }
-        else{
+        } else {
             req.session.user = username;
             res.redirect('/home');
         }
-        
+
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).send("An error occurred while logging in");
     }
 });
 
-//logout User
+// Logout User
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -184,7 +187,7 @@ app.get("/api/posts", async (req, res) => {
     }
 });
 
-//Random Picks
+// Random Picks
 async function fetchRandomRecipes(numRecipes) {
     try {
         // Connect to MongoDB
@@ -225,14 +228,13 @@ app.post("/api/random", async (req, res) => {
     }
 });
 
-//User Posts Retrieval
-app.post('/api/userposts', async(req,res)=>{
-    try{
-        const numPosts=res.body.numPosts;
-        const userPosts=await userPosts.aggregate([{$sample:{size:numPosts}}]).toArray();
-        res.json({userPosts});
-    }
-    catch(err){
+// User Posts Retrieval
+app.post('/api/userposts', async (req, res) => {
+    try {
+        const numPosts = req.body.numPosts;
+        const userPosts = await userPosts.aggregate([{$sample: { size: numPosts }}]).toArray();
+        res.json({ userPosts });
+    } catch (err) {
         console.error('Error in /api/userposts route:', err);
         res.status(500).send(err);
     }
@@ -250,51 +252,37 @@ app.post('/api/post', upload.single('image'), async (req, res) => {
         const username = req.session.user;
         // Get the current date
         const currentDate = new Date();
-
-        // Extract day, month, and year components
-        const day = currentDate.getDate().toString().padStart(2, '0'); // Ensure 2-digit format
-        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed, so add 1
         const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const dateString = `${year}-${month}-${day}`;
 
-        // Format the date as DD/MM/YYYY
-        const formattedDate = `${day}/${month}/${year}`;
-
-        const imageUrl = await uploadImageStreamed(fileName, buffer);
-        await storeMetadata(username,title, description, fileName, caption, fileType, imageUrl,formattedDate);
-        const postData={
+        // Store the metadata in MongoDB
+        const imageMetadata = {
             title,
             description,
-            imageUrl,
-            formattedDate
-        }
-        res.status(201).send({ message: 'Post created successfully', postData });
+            caption,
+            filename: fileName,
+            username: username,
+            date: dateString
+        };
+
+        await userPosts.insertOne(imageMetadata);
+        console.log('Metadata stored in MongoDB:', imageMetadata);
+
+        // Upload the image to Azure Blob Storage
+        const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+        const stream = Readable.from(buffer);
+        await blockBlobClient.uploadStream(stream);
+        console.log('Image uploaded to Azure Blob Storage:', fileName);
+
+        res.status(200).json({ message: 'Post uploaded successfully' });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send({ error: 'Internal Server Error' });
+        console.error('Error uploading post:', error);
+        res.status(500).json({ message: 'Error uploading post' });
     }
 });
 
-// Extract metadata
-function extractMetadata(file) {
-    const fileType = file.mimetype.split('/')[1];
-    const fileName = file.originalname || `image-${Date.now()}.${fileType}`;
-    const caption = 'No caption provided';
-    return { fileName, caption, fileType };
-}
-
-// Upload image to Azure Blob Storage
-async function uploadImageStreamed(blobName, buffer) {
-    const blobClient = containerClient.getBlockBlobClient(blobName);
-    const stream = Readable.from(buffer);
-    await blobClient.uploadStream(stream);
-    return blobClient.url;
-}
-
-// Store metadata in MongoDB
-async function storeMetadata(username,title, description, name, caption, fileType, imageUrl,formattedDate) {
-    await userPosts.insertOne({ username,title, description, name, caption, fileType, imageUrl,formattedDate });
-}
-
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
