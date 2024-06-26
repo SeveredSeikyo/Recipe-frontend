@@ -67,7 +67,7 @@
                         <button type="submit" class="btn btn-light">Logout</button>
                     </div>
                     <div class="icon-display">
-                        <button type="submit" class="btn btn-light"><i class='bx bx-log-out icon'></i></button>
+                        <button type="submit" style="border: none;"><i class='bx bx-log-out icon'></i></button>
                     </div>
                 </form>
             </div>
@@ -104,6 +104,10 @@
                       <input type="text" id="title" name="title" required class="form-control">
                     </div>
                     <div class="form-group">
+                        <label for="ingredients">Ingredients:</label>
+                        <textarea id="ingredients" name="ingredients" rows="4" required class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
                       <label for="description">Description:</label>
                       <textarea id="description" name="description" rows="4" required class="form-control"></textarea>
                     </div>
@@ -115,8 +119,51 @@
                 </form>
             </div>
             <h4>Your Posts</h4>
-            <div class="row" id="postItemContainer">
-
+            <div class = "meal-wrapper">
+        
+                <div class = "meal-result">
+                    <!-- <h2 class = "title sticky">Random Picks</h2> -->
+                    <div id= "meal">
+                    <!-- meal item -->
+                    <!-- <div class = "meal-item">
+                        <div class = "meal-img">
+                        <img src = "food.jpg" alt = "food">
+                        </div>
+                        <div class = "meal-name">
+                        <h3>Potato Chips</h3>
+                        <a href = "#" class = "recipe-btn">Get Recipe</a>
+                        </div>
+                    </div> -->
+                    <!-- end of meal item -->
+                    </div>
+                </div>
+            
+            
+                <div class = "meal-details">
+                    <!-- recipe close btn -->
+                    <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn">
+                    <i class = "bx bx-x"></i>
+                    </button>
+            
+                    <!-- meal content -->
+                    <div class = "meal-details-content">
+                    <!-- <h2 class = "recipe-title">Meals Name Here</h2>
+                    <p class = "recipe-category">Category Name</p>
+                    <div class = "recipe-instruct">
+                        <h3>Ingredients:</h3>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo blanditiis quis accusantium natus! Porro, reiciendis maiores molestiae distinctio veniam ratione ex provident ipsa, soluta suscipit quam eos velit autem iste!</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet aliquam voluptatibus ad obcaecati magnam, esse numquam nisi ut adipisci in?</p>
+                    </div>
+                    <div class = "recipe-instruct">
+                        <h3>Directions:</h3>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo blanditiis quis accusantium natus! Porro, reiciendis maiores molestiae distinctio veniam ratione ex provident ipsa, soluta suscipit quam eos velit autem iste!</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet aliquam voluptatibus ad obcaecati magnam, esse numquam nisi ut adipisci in?</p>
+                    </div>
+                    <div class = "recipe-meal-img">
+                        <img src = "food.jpg" alt = "">
+                    </div> -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>

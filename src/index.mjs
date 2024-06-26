@@ -243,10 +243,11 @@ app.post('/api/userposts', async (req, res) => {
 // Handle image upload and store metadata
 app.post('/api/post', upload.single('image'), async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title, ingredients, description } = req.body;
         const { originalname, mimetype, buffer } = req.file;
 
         const fileType = mimetype.split('/')[1];
+        const uniqueFileName = `image-${uuidv4()}.${fileType}`;
         const fileName = originalname || `image-${Date.now()}.${fileType}`;
         const caption = 'No caption provided'; // Modify this if you need to extract the caption from the request
         const username = req.session.user;
@@ -257,24 +258,27 @@ app.post('/api/post', upload.single('image'), async (req, res) => {
         const day = String(currentDate.getDate()).padStart(2, '0');
         const dateString = `${year}-${month}-${day}`;
 
-        // Store the metadata in MongoDB
-        const imageMetadata = {
-            title,
-            description,
-            caption,
-            filename: fileName,
-            username: username,
-            date: dateString
-        };
-
-        await userPosts.insertOne(imageMetadata);
-        console.log('Metadata stored in MongoDB:', imageMetadata);
-
         // Upload the image to Azure Blob Storage
         const blockBlobClient = containerClient.getBlockBlobClient(fileName);
         const stream = Readable.from(buffer);
         await blockBlobClient.uploadStream(stream);
+        const imageUrl=blockBlobClient.url;
         console.log('Image uploaded to Azure Blob Storage:', fileName);
+
+        // Store the metadata in MongoDB
+        const imageMetadata = {
+            title,
+            ingredients,
+            description,
+            caption,
+            filename: uniqueFileName,
+            username: username,
+            date: dateString,
+            imageUrl:imageUrl
+        };
+
+        await userPosts.insertOne(imageMetadata);
+        console.log('Metadata stored in MongoDB:', imageMetadata);
 
         res.status(200).json({ message: 'Post uploaded successfully' });
     } catch (error) {
