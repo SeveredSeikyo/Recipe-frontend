@@ -84,6 +84,19 @@ body{
     max-height: 100vh;
     scroll-behavior: smooth;
 }
+
+#select{
+    border: none;
+    background-color: #d65108;
+    outline: none;
+    color: white;
+    width: 100%;
+    border-radius: 50%;
+}
+#select:hover{
+    background-color: #b54507;
+}
+
 .sub-content{
     /* margin-bottom: 20px; */
 }

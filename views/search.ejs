@@ -47,13 +47,13 @@
                 <div class="icon-display">
                     <a href="/post" class="anchor-icon"><i class='bx bxs-plus-square icon'></i></a>
                 </div>
-                <div class="large-display">
+                <!-- <div class="large-display">
                     <a href="/profile"><img src="assets/square-png.webp" alt="profile" class="profile-image"></a>
                     <p>Profile</p>
                 </div>
                 <div class="icon-display">
                     <a href="/profile"><img src="assets/square-png.webp" alt="profile" class="profile-image"></a>
-                </div>
+                </div> -->
             </div>
             <div class="second-panel">
                 <!-- <div class="large-display">
@@ -91,9 +91,9 @@
                 <div class="icon-display">
                     <a href="/explore" class="anchor-icon"><i class='bx bx-compass icon' ></i></a>
                 </div>
-                <div class="icon-display">
+                <!-- <div class="icon-display">
                     <a href="/profile"><img src="assets/square-png.webp" alt="profile" class="profile-image"></a>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="main-content">
@@ -107,9 +107,16 @@
                 <div class = "meal-search">
           
                   <div class = "meal-search-box">
-                    <input type = "text" class = "search-control" placeholder="Enter an ingredient" id = "search-input">
+                    <input type = "text" class = "search-control" placeholder="Enter a value" id = "search-input">
                     <button type = "submit" class = "search-btn recipe-search-btn" id = "search-btn">
-                      <i class = "bx bx-search"></i>
+                        <select name="type" id="select">
+                            <option value="area">Area</option>
+                            <option value="ingredient" selected>Ingredient</option>
+                            <option value="category">Category</option>
+                            <option value="name">name</option>
+                            <option value="firstLetter">firstLetter</option>
+                        </select>
+                      <!-- <i class = "bx bx-search"></i> -->
                     </button>
                   </div>
                 </div>

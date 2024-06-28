@@ -89,14 +89,14 @@ body{
     align-items: center;
     padding: 20px 20px;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     max-height: 100vh;
-    background-color: aliceblue;
+    background-color: white;
     scroll-behavior: smooth;
 }
 .sub-content{
     /* margin-bottom: 20px; */
-    background-color: aquamarine;
+    background-color: white;
 }
 .btn{
     align-self: center;
@@ -114,7 +114,7 @@ body{
     font-size: 1.05rem;
 }
 .meal-wrapper{
-    max-width: 100%;
+    width: 100%;
     max-height: 100vh;
     margin: 0 auto;
     padding-top: 0px;
@@ -124,7 +124,17 @@ body{
     background: #fff;
     text-align: center;
     position: fixed;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#meal{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 10px;
+    max-width: 90%;
+}
+.meal-wrapper::-webkit-scrollbar{
+    display: none;
 }
 .meal-search{
     margin: 2rem 0;
@@ -221,6 +231,55 @@ body{
 }
 .recipe-btn:hover{
     background: var(--tenne-tawny-dark);
+}
+
+/*post-details*/
+.description-container {
+    width: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.post-results{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.post-result{
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid lightgray;
+    max-width: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.post-image{
+    width: 100%;
+}
+
+#description-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+#more-link {
+    color: blue;
+    cursor: pointer;
+    display: none;
+}
+
+.description-container.expanded #description-text {
+    -webkit-line-clamp: unset;
+}
+
+.description-container.expanded #more-link {
+    display: none;
 }
 
 /* meal details */
@@ -454,6 +513,7 @@ body{
         padding:0 20px;
         background-color: white;
         border-top: 1px solid grey;
+        z-index: 999;
     }
     .icon-display{
         display: flex;

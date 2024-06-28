@@ -240,6 +240,23 @@ app.post('/api/userposts', async (req, res) => {
     }
 });
 
+//get user name
+app.post("/api/getuser/", async (req, res) => {
+    try {
+        const user = req.session.user;
+        console.log("user:",user);
+        if (user) {
+            res.status(200).json({ user: user });
+        } else {
+            res.status(404).json({ error: "User not found" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
 // Handle image upload and store metadata
 app.post('/api/post', upload.single('image'), async (req, res) => {
     try {
@@ -286,6 +303,7 @@ app.post('/api/post', upload.single('image'), async (req, res) => {
         res.status(500).json({ message: 'Error uploading post' });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
